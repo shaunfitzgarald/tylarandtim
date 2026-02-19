@@ -24,7 +24,7 @@ const theme = createTheme({
     fontFamily: '"Cormorant Garamond", "Georgia", serif',
     h1: {
       fontFamily: '"Great Vibes", cursive', // Script for Names
-      fontSize: '4rem',
+      fontSize: 'clamp(2.5rem, 8vw, 4rem)',
       color: '#D4AF37',
     },
     h2: {
@@ -32,6 +32,7 @@ const theme = createTheme({
       fontWeight: 600,
       letterSpacing: '0.1em',
       textTransform: 'uppercase',
+      fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
     },
     h3: {
       fontFamily: '"Cormorant Garamond", serif',

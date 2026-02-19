@@ -7,14 +7,58 @@ import { httpsCallable } from 'firebase/functions';
 import { getFunctions } from 'firebase/functions';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import MicIcon from '@mui/icons-material/Mic';
+import StopIcon from '@mui/icons-material/Stop';
+
 const AiAssistant = () => {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { text: "Hi! I'm Tylar & Tim's Wedding Assistant. Ask me anything about the big day!", sender: 'system' }
+        { text: "Hi! I'm Tylar & Tim's Wedding Assistant. Ask me anything about the big day, or say 'RSVP' to get on the list!", sender: 'system' }
     ]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isListening, setIsListening] = useState(false);
     const messagesEndRef = useRef(null);
+
+    const recognitionRef = useRef(null);
+
+    useEffect(() => {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognitionRef.current = new SpeechRecognition();
+            recognitionRef.current.continuous = false;
+            recognitionRef.current.interimResults = false;
+
+            recognitionRef.current.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                setInput(transcript);
+                setIsListening(false);
+                // Optional: Auto-send
+                // handleSend(null, transcript); 
+            };
+
+            recognitionRef.current.onerror = (event) => {
+                console.error("Speech recognition error", event.error);
+                setIsListening(false);
+            };
+            
+            recognitionRef.current.onend = () => {
+                setIsListening(false);
+            };
+        }
+    }, []);
+
+    const toggleListening = () => {
+        if (isListening) {
+            recognitionRef.current?.stop();
+            setIsListening(false);
+        } else {
+            setInput('');
+            recognitionRef.current?.start();
+            setIsListening(true);
+        }
+    };
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -112,12 +156,25 @@ const AiAssistant = () => {
                                 <div ref={messagesEndRef} />
                             </Box>
 
-                            {/* Input Area */}
-                            <Box component="form" onSubmit={handleSend} sx={{ p: 2, bgcolor: 'white', borderTop: '1px solid #eee', display: 'flex', gap: 1 }}>
+                            <Box component="form" onSubmit={handleSend} sx={{ p: 2, bgcolor: 'white', borderTop: '1px solid #eee', display: 'flex', gap: 1, alignItems: 'center' }}>
+                                <IconButton 
+                                    onClick={toggleListening} 
+                                    color={isListening ? "error" : "default"}
+                                    sx={{ 
+                                        animation: isListening ? 'pulse 1.5s infinite' : 'none',
+                                        '@keyframes pulse': {
+                                            '0%': { boxShadow: '0 0 0 0 rgba(212, 60, 60, 0.7)' },
+                                            '70%': { boxShadow: '0 0 0 10px rgba(212, 60, 60, 0)' },
+                                            '100%': { boxShadow: '0 0 0 0 rgba(212, 60, 60, 0)' }
+                                        }
+                                    }}
+                                >
+                                    {isListening ? <StopIcon /> : <MicIcon />}
+                                </IconButton>
                                 <TextField
                                     fullWidth
                                     size="small"
-                                    placeholder="Ask a question..."
+                                    placeholder={isListening ? "Listening..." : "Ask a question..."}
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     disabled={loading}
