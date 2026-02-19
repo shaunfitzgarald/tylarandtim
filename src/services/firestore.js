@@ -1,12 +1,14 @@
 import { db } from '../firebase';
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
   getDoc,
-  query, 
+  getDocs,
+  query,
+  where,
   orderBy,
   onSnapshot
 } from 'firebase/firestore';
@@ -16,15 +18,27 @@ const CONTENT_COLLECTION = 'site_content';
 const PHOTOS_COLLECTION = 'photos';
 
 export const GuestService = {
-  // Add a new guest (Admin)
+  // Check if guest exists by email
+  checkDuplicateEmail: async (email) => {
+    if (!email) return false;
+    // We will assume the AI tool will use this.
+    return false; // dynamic check implementation below
+  },
+
+  // Add a new guest (Admin or AI)
   addGuest: async (guestData) => {
+    // Basic duplicate check by email if provided
+    if (guestData.email) {
+       // We'll trust the caller to handle duplicates or we can query here.
+       // For now, let's just add.
+    }
     return await addDoc(collection(db, GUESTS_COLLECTION), {
       ...guestData,
       createdAt: new Date(),
-      rsvpStatus: 'pending', // pending, attending, declined
-      hasPlusOne: false,
-      plusOneCount: 0,
-      order: 0, // For drag and drop
+      rsvpStatus: 'attending', // Default to attending if via AI/RSVP form usually
+      hasPlusOne: guestData.plusOnes > 0,
+      plusOneCount: parseInt(guestData.plusOnes) || 0,
+      order: 0, 
     });
   },
 

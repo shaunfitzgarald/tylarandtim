@@ -1,8 +1,7 @@
 const { onCall } = require("firebase-functions/v2/https");
-const { defineFlow, startFlowsServer } = require("@genkit-ai/flow");
 const { googleAI, gemini15Flash } = require("@genkit-ai/googleai");
 const { configureGenkit } = require("@genkit-ai/core");
-const z = require("zod");
+const { generate } = require("@genkit-ai/ai");
 const admin = require("firebase-admin");
 
 admin.initializeApp();
@@ -15,64 +14,50 @@ configureGenkit({
 });
 
 // Wedding Assistant Flow
-// This flow answers questions based on site content fetched from Firestore
 exports.weddingAssistant = onCall({ cors: true }, async (request) => {
-  const { question } = request.data;
+  const question = request.data?.question || request.data;
   
-  if (!question) {
+  if (!question || typeof question !== 'string') {
      return { answer: "Please ask a question!" };
   }
 
-  // Fetch context from Firestore (e.g. schedules, locations)
-  // For now, we'll fetch everything from 'site_content' collection
-  const contentSnapshot = await db.collection('site_content').get();
-  let contextText = "Here is the wedding information:\n";
-  
-  contentSnapshot.forEach(doc => {
-      const data = doc.data();
-      contextText += `${doc.id}: ${JSON.stringify(data)}\n`;
-  });
-  
-  // Basic fallback context if DB is empty
-  if (contentSnapshot.empty) {
-      contextText += "Date: September 6, 2026. Location: Honolulu, HI. Couple: Tylar and Timothy.";
-  }
-
-  const flowPromise = defineFlow(
-    {
-      name: "weddingAssistantFlow",
-      inputSchema: z.string(),
-      outputSchema: z.string(),
-    },
-    async (inputQuestion) => {
-      const { generate } = require("@genkit-ai/ai");
-      
-      const llmResponse = await generate({
-        model: gemini15Flash,
-        prompt: `
-          You are the helpful AI assistant for Tylar and Timothy's wedding.
-          Use the following context to answer the guest's question.
-          If the answer is not in the context, politely say you don't know but suggest they check back later.
-          Keep answers warm, concise, and celebratory.
-          
-          Context:
-          ${contextText}
-          
-          Question: ${inputQuestion}
-        `,
-      });
-
-      return llmResponse.text();
-    }
-  );
-
   try {
-      // Direct invocation of the flow logic for the onCall wrapper
-      // In a real Genkit serving setup, we'd use startFlowsServer, 
-      // but for Firebase Functions, we wrap the flow logic or use onFlow (if available in this version)
-      // Simulating flow execution:
-      const result = await flowPromise(question);
-      return { answer: result };
+    const contentSnapshot = await db.collection('site_content').get();
+    let contextText = "Here is the wedding information:\n";
+    contentSnapshot.forEach(doc => {
+        contextText += `Section '${doc.id}': ${JSON.stringify(doc.data())}\n`;
+    });
+    
+    // Add Important Dates and Fallback
+    if (contentSnapshot.empty || true) { // Always append key dates to be safe
+        contextText += `
+        Important Dates:
+        - Bridal Party: Saturday, May 23, 2026 (Memorial Day Weekend) in CA.
+        - Bridal Shower: September 4, 2026 in HI.
+        - Wedding: September 6, 2026 in HI.
+        - Couple: Tylar and Timothy.
+        `;
+    }
+
+    const llmResponse = await generate({
+      model: gemini15Flash,
+      prompt: `
+        You are the helpful, warm, and celebratory AI assistant for Tylar and Timothy's wedding (Sep 6, 2026).
+        
+        IMPORTANT RULE: The wedding venue is a SECRET. 
+        If anyone asks about the location or venue, say: "The venue is a secret until right before the wedding! Stay tuned."
+        
+        Context:
+        ${contextText}
+        
+        Question: ${question}
+        
+        If the user wants to RSVP, kindly direct them to use the RSVP form on the website. You cannot process RSVPs directly.
+      `,
+    });
+
+    return { answer: llmResponse.text() };
+
   } catch (error) {
       console.error("AI Error:", error);
       return { answer: "Sorry, I'm having trouble thinking right now. Please try again." };

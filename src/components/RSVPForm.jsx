@@ -69,14 +69,14 @@ const RSVPForm = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', p: { xs: 1, md: 2 } }}>
       <GeometricBorder sx={{ maxWidth: '600px', width: '100%', p: { xs: 2, md: 4 } }}>
         <Typography variant="h2" align="center" gutterBottom sx={{ mb: 4 }}>
           RSVP
         </Typography>
         
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 2 }}>
             <TextField
               fullWidth
               label="First Name"
