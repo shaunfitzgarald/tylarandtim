@@ -1,24 +1,30 @@
-const { onCall } = require("firebase-functions/v2/https");
-const { googleAI, gemini15Flash } = require("@genkit-ai/googleai");
-const { configureGenkit } = require("@genkit-ai/core");
-const { generate } = require("@genkit-ai/ai");
+// Deployment Time: 2026-02-21T02:13:00Z - Forcing API key refresh
+const { genkit } = require("genkit");
+const { googleAI, gemini20Flash } = require("@genkit-ai/googleai");
+const { onRequest } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
+const { z } = require("zod");
 
 admin.initializeApp();
 const db = admin.firestore();
 
-configureGenkit({
+const model = "googleai/gemini-2.0-flash"; // Fixed string for reference if needed
+const ai = genkit({
   plugins: [googleAI()],
-  logLevel: "debug",
-  enableTracingAndMetrics: true,
+  model: gemini20Flash,
 });
 
 // Wedding Assistant Flow
-exports.weddingAssistant = onCall({ cors: true }, async (request) => {
-  const question = request.data?.question || request.data;
+exports.weddingAssistantV2 = onRequest({ 
+  cors: true,
+  invoker: 'public',
+  maxInstances: 10
+}, async (req, res) => {
+  // Handle Callable-like request or direct fetch
+  const question = req.body?.data?.question || req.body?.question || req.query?.question;
   
   if (!question || typeof question !== 'string') {
-     return { answer: "Please ask a question!" };
+     return res.status(400).send({ data: { answer: "Please ask a question!" } });
   }
 
   try {
@@ -39,8 +45,8 @@ exports.weddingAssistant = onCall({ cors: true }, async (request) => {
         `;
     }
 
-    const llmResponse = await generate({
-      model: gemini15Flash,
+    const llmResponse = await ai.generate({
+      model: gemini20Flash, 
       prompt: `
         You are the helpful, warm, and celebratory AI assistant for Tylar and Timothy's wedding (Sep 6, 2026).
         
@@ -56,10 +62,10 @@ exports.weddingAssistant = onCall({ cors: true }, async (request) => {
       `,
     });
 
-    return { answer: llmResponse.text() };
+    return res.status(200).send({ data: { answer: llmResponse.text() } });
 
   } catch (error) {
       console.error("AI Error:", error);
-      return { answer: "Sorry, I'm having trouble thinking right now. Please try again." };
+      return res.status(500).send({ data: { answer: "Sorry, I'm having trouble thinking right now. Please try again." } });
   }
 });

@@ -55,11 +55,14 @@ export const GuestService = {
   },
 
   // Get all guests (Real-time listener for Admin)
-  subscribeToGuests: (callback) => {
+  subscribeToGuests: (callback, onError) => {
     const q = query(collection(db, GUESTS_COLLECTION), orderBy('order', 'asc'));
     return onSnapshot(q, (snapshot) => {
       const guests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       callback(guests);
+    }, (error) => {
+      if (onError) onError(error);
+      else console.error("Firestore Subscribe Error:", error);
     });
   },
   
@@ -78,7 +81,7 @@ export const GuestService = {
 export const ContentService = {
   getContent: async (section) => {
     const docRef = doc(db, CONTENT_COLLECTION, section);
-    const docSnap = getDoc(docRef);
+    const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
     } else {

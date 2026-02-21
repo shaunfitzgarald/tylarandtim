@@ -8,15 +8,23 @@ const GuestCounter = () => {
 
   useEffect(() => {
     // Real-time listener for guest count
-    const unsubscribe = GuestService.subscribeToGuests((guests) => {
-      const total = guests.reduce((acc, guest) => {
-        if (guest.attending === 'yes') {
-            return acc + 1 + (guest.plusOnes || 0);
-        }
-        return acc;
-      }, 0);
-      setCount(total);
-    });
+    let unsubscribe = () => {};
+    try {
+      unsubscribe = GuestService.subscribeToGuests((guests) => {
+        const total = guests.reduce((acc, guest) => {
+          if (guest.attending === 'yes') {
+              return acc + 1 + (guest.plusOnes || 0);
+          }
+          return acc;
+        }, 0);
+        setCount(total);
+      }, (error) => {
+        console.warn("Public user cannot see guest count details (permissions)");
+        setCount(0); // Optional: default to 0 for public
+      });
+    } catch (err) {
+      console.warn("GuestCounter subscribe error:", err);
+    }
 
     return () => unsubscribe();
   }, []);
