@@ -6,8 +6,8 @@ const GeometricBorder = ({ children, sx }) => {
     <Box
       sx={{
         position: 'relative',
-        padding: '30px',
-        margin: '20px',
+        padding: { xs: 2, md: '30px' },
+        margin: { xs: 1, md: '20px' },
         border: '1px solid #D4AF37', // Outer thin gold line
         backgroundColor: 'background.paper',
         ...sx

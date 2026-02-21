@@ -26,13 +26,16 @@ const theme = createTheme({
       fontFamily: '"Great Vibes", cursive', // Script for Names
       fontSize: 'clamp(2.5rem, 8vw, 4rem)',
       color: '#D4AF37',
+      overflowWrap: 'break-word',
     },
     h2: {
-      fontFamily: '"Cormorant Garamond", serif', // Serif for Dates/Headers
+      fontFamily: '"Cormorant Garamond", serif', // Serif for Headers
       fontWeight: 600,
       letterSpacing: '0.1em',
       textTransform: 'uppercase',
-      fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
+      fontSize: 'clamp(1.2rem, 5vw, 2.5rem)', // Slightly smaller min
+      overflowWrap: 'break-word',
+      lineHeight: 1.2,
     },
     h3: {
       fontFamily: '"Cormorant Garamond", serif',
