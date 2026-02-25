@@ -39,23 +39,47 @@ const Gallery = () => {
                         transition={{ delay: index * 0.05 }}
                         style={{ breakInside: 'avoid', marginBottom: 16 }}
                     >
-                        <Box 
-                            component="img"
-                            src={photo.url}
-                            alt={photo.caption}
-                            onClick={() => setSelectedPhoto(photo)}
-                            sx={{
-                                width: '100%',
-                                display: 'block',
-                                borderRadius: 1,
-                                cursor: 'pointer',
-                                transition: 'transform 0.3s ease',
-                                '&:hover': {
-                                    transform: 'scale(1.02)',
-                                    boxShadow: '0 4px 20px rgba(212, 175, 55, 0.3)'
-                                }
-                            }}
-                        />
+                        {photo.type === 'video' ? (
+                            <Box 
+                                component="video"
+                                src={photo.url}
+                                muted
+                                playsInline
+                                loop
+                                onClick={() => setSelectedPhoto(photo)}
+                                onMouseEnter={(e) => e.target.play()}
+                                onMouseLeave={(e) => { e.target.pause(); e.target.currentTime = 0; }}
+                                sx={{
+                                    width: '100%',
+                                    display: 'block',
+                                    borderRadius: 1,
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'scale(1.02)',
+                                        boxShadow: '0 4px 20px rgba(212, 175, 55, 0.3)'
+                                    }
+                                }}
+                            />
+                        ) : (
+                            <Box 
+                                component="img"
+                                src={photo.url}
+                                alt={photo.caption}
+                                onClick={() => setSelectedPhoto(photo)}
+                                sx={{
+                                    width: '100%',
+                                    display: 'block',
+                                    borderRadius: 1,
+                                    cursor: 'pointer',
+                                    transition: 'transform 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'scale(1.02)',
+                                        boxShadow: '0 4px 20px rgba(212, 175, 55, 0.3)'
+                                    }
+                                }}
+                            />
+                        )}
                     </motion.div>
                 ))}
             </Box>
@@ -77,15 +101,29 @@ const Gallery = () => {
                 >
                     {selectedPhoto && (
                         <GeometricBorder sx={{ p: 1, bgcolor: 'black' }}>
-                            <img 
-                                src={selectedPhoto.url} 
-                                alt={selectedPhoto.caption} 
-                                style={{ 
-                                    maxWidth: '100%', 
-                                    maxHeight: '80vh', 
-                                    display: 'block' 
-                                }} 
-                            />
+                            {selectedPhoto.type === 'video' ? (
+                                <video 
+                                    src={selectedPhoto.url} 
+                                    controls
+                                    autoPlay
+                                    playsInline
+                                    style={{ 
+                                        maxWidth: '100%', 
+                                        maxHeight: '80vh', 
+                                        display: 'block' 
+                                    }} 
+                                />
+                            ) : (
+                                <img 
+                                    src={selectedPhoto.url} 
+                                    alt={selectedPhoto.caption} 
+                                    style={{ 
+                                        maxWidth: '100%', 
+                                        maxHeight: '80vh', 
+                                        display: 'block' 
+                                    }} 
+                                />
+                            )}
                         </GeometricBorder>
                     )}
                 </Box>

@@ -80,25 +80,19 @@ const AiAssistant = () => {
         try {
             // Call the onRequest weddingAssistant endpoint directly
             const response = await fetch('https://us-central1-tylarandtim.cloudfunctions.net/weddingAssistantV2', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          data: {
-            question: input
-          }
-        }),
-      });
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: { question: input } })
+            });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const result = await response.json();
-            const aiMessage = result?.data?.answer || "I'm not sure how to answer that, but I'm here to help!";
             
-            setMessages(prev => [...prev, { text: aiMessage, sender: 'ai' }]);
+            const aiResponse = result.data?.answer || result.answer || "I seem to be having trouble articulating myself right now.";
+            setMessages(prev => [...prev, { text: aiResponse, sender: 'system' }]);
         } catch (error) {
             console.error(error);
             setMessages(prev => [...prev, { text: "Sorry, I'm having trouble connecting right now.", sender: 'system' }]);

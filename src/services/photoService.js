@@ -27,6 +27,7 @@ export const PhotoService = {
       url: downloadURL,
       storagePath: snapshot.ref.fullPath,
       caption,
+      type: file.type.startsWith('video/') ? 'video' : 'image',
       order: Date.now(), // Default order
       createdAt: new Date()
     });

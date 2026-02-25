@@ -65,7 +65,7 @@ const PhotoManager = () => {
                     disabled={uploading}
                 >
                     {uploading ? 'Uploading...' : 'Upload Photos'}
-                    <input type="file" hidden multiple accept="image/*" onChange={handleFileUpload} />
+                    <input type="file" hidden multiple accept="image/*,video/*" onChange={handleFileUpload} />
                 </Button>
             </Box>
 
@@ -97,12 +97,22 @@ const PhotoManager = () => {
                                                 ...provided.draggableProps.style
                                             }}
                                         >
-                                            <img
-                                                src={photo.url}
-                                                alt={photo.caption || 'Gallery Image'}
-                                                style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block' }}
-                                                loading="lazy"
-                                            />
+                                            {photo.type === 'video' ? (
+                                                <video
+                                                    src={photo.url}
+                                                    style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block' }}
+                                                    muted
+                                                    loop
+                                                    playsInline
+                                                />
+                                            ) : (
+                                                <img
+                                                    src={photo.url}
+                                                    alt={photo.caption || 'Gallery Image'}
+                                                    style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block' }}
+                                                    loading="lazy"
+                                                />
+                                            )}
                                             <Box 
                                                 sx={{ 
                                                     position: 'absolute', 
