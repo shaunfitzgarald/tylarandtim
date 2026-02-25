@@ -1,22 +1,14 @@
 const { onRequest } = require("firebase-functions/v2/https");
-const { googleAI, gemini15Flash } = require("@genkit-ai/googleai");
-const { configureGenkit } = require("@genkit-ai/core");
-const { generate } = require("@genkit-ai/ai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const admin = require("firebase-admin");
 
 admin.initializeApp();
 const db = admin.firestore();
 
-configureGenkit({
-  plugins: [googleAI()],
-  logLevel: "debug",
-  enableTracingAndMetrics: true,
-});
-
 const cors = require('cors')({ origin: true });
 
 // Wedding Assistant Flow
-exports.weddingAssistantV2 = onRequest(async (req, res) => {
+exports.weddingAssistantV2 = onRequest({ cors: true, invoker: 'public' }, async (req, res) => {
   cors(req, res, async () => {
     const question = req.body?.data?.question || req.body?.question || req.query?.question;
     
@@ -42,9 +34,13 @@ exports.weddingAssistantV2 = onRequest(async (req, res) => {
           `;
       }
   
-      const llmResponse = await generate({
-        model: gemini15Flash,
-        prompt: `
+      const apiKey = process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY;
+      if (!apiKey) throw new Error("Missing API Key");
+      
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      
+      const prompt = `
           You are the helpful, warm, and celebratory AI assistant for Tylar and Timothy's wedding (Sep 6, 2026).
           
           IMPORTANT RULE: The wedding venue is a SECRET. 
@@ -56,16 +52,10 @@ exports.weddingAssistantV2 = onRequest(async (req, res) => {
           Question: ${question}
           
           If the user wants to RSVP, kindly direct them to use the RSVP form on the website. You cannot process RSVPs directly.
-        `,
-      });
-  
-      console.log("LLM RESPONSE RAW:", JSON.stringify(llmResponse));
-      let textOut = "Wait... I am reading our notes...";
-      if (llmResponse && llmResponse.text) {
-          textOut = typeof llmResponse.text === 'function' ? llmResponse.text() : llmResponse.text;
-      } else if (llmResponse && llmResponse.candidates && llmResponse.candidates.length > 0) {
-          textOut = llmResponse.candidates[0].message?.content?.[0]?.text || "Unable to read response.";
-      }
+        `;
+        
+      const result = await model.generateContent(prompt);
+      let textOut = result.response.text();
   
       return res.status(200).send({ data: { answer: textOut } });
   
