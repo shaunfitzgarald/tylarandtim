@@ -78,11 +78,22 @@ const AiAssistant = () => {
         setLoading(true);
 
         try {
+            // Format messages for the AI model
+            const formattedHistory = messages.map(m => ({
+                role: m.sender === 'user' ? 'user' : 'model',
+                parts: [{ text: m.text }]
+            }));
+
             // Call the onRequest weddingAssistant endpoint directly
             const response = await fetch('https://us-central1-tylarandtim.cloudfunctions.net/weddingAssistantV2', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: { question: input } })
+                body: JSON.stringify({ 
+                    data: { 
+                        question: input,
+                        history: formattedHistory
+                    } 
+                })
             });
 
             if (!response.ok) {
