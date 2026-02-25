@@ -42,6 +42,7 @@ export const GuestService = {
       hasPlusOne: guestData.plusOnes > 0,
       plusOneCount: parseInt(guestData.plusOnes) || 0,
       order: 0, 
+      tableId: null // default to no table
     });
   },
 
@@ -100,6 +101,12 @@ export const GuestService = {
         return updateDoc(guestRef, { order: index });
     });
     return Promise.all(promises);
+  },
+
+  // Update a guest's assigned table
+  updateGuestTable: async (guestId, tableId) => {
+    const guestRef = doc(db, GUESTS_COLLECTION, guestId);
+    return await updateDoc(guestRef, { tableId: tableId });
   }
 };
 

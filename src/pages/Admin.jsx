@@ -6,6 +6,7 @@ import Login from '../components/Login';
 import GuestManager from '../admin/GuestManager';
 import PhotoManager from '../admin/PhotoManager';
 import ContentEditor from '../admin/ContentEditor';
+import SeatingChart from '../admin/SeatingChart';
 
 const Admin = () => {
     const [tab, setTab] = useState(0);
@@ -44,14 +45,16 @@ const Admin = () => {
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
                 <Tabs value={tab} onChange={handleTabChange} aria-label="admin tabs">
                     <Tab label="Guest List & RSVPs" />
+                    <Tab label="Seating Chart" />
                     <Tab label="Photo Gallery" />
                     <Tab label="Site Content" />
                 </Tabs>
             </Box>
 
             {tab === 0 && <GuestManager />}
-            {tab === 1 && <PhotoManager />}
-            {tab === 2 && <ContentEditor />}
+            {tab === 1 && <SeatingChart />}
+            {tab === 2 && <PhotoManager />}
+            {tab === 3 && <ContentEditor />}
         </Container>
     );
 };
