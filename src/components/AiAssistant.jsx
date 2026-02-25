@@ -78,11 +78,25 @@ const AiAssistant = () => {
         setLoading(true);
 
         try {
-            // Format messages for the AI model
-            const formattedHistory = messages.map(m => ({
-                role: m.sender === 'user' ? 'user' : 'model',
-                parts: [{ text: m.text }]
-            }));
+            // Format messages for the AI model: strictly start with 'user' and alternate
+            let startedWithUser = false;
+            const formattedHistory = [];
+            for (const m of messages) {
+                const role = m.sender === 'user' ? 'user' : 'model';
+                if (role === 'user') startedWithUser = true;
+                
+                if (startedWithUser) {
+                    // Prevent consecutive messages from the same role which breaks the SDK
+                    if (formattedHistory.length > 0 && formattedHistory[formattedHistory.length - 1].role === role) {
+                        formattedHistory[formattedHistory.length - 1].parts[0].text += "\n" + m.text;
+                    } else {
+                        formattedHistory.push({
+                            role: role,
+                            parts: [{ text: m.text }]
+                        });
+                    }
+                }
+            }
 
             // Call the onRequest weddingAssistant endpoint directly
             const response = await fetch('https://us-central1-tylarandtim.cloudfunctions.net/weddingAssistantV2', {
