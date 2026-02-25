@@ -9,7 +9,7 @@ const RsvpPage = () => {
             <Container maxWidth="md">
                 <GeometricBorder>
                     <Box sx={{ textAlign: 'center', mb: 6 }}>
-                        <Typography variant="h2" component="h1" gutterBottom sx={{ fontFamily: '"Great Vibes", cursive', color: '#D4AF37' }}>
+                        <Typography variant="h2" component="h1" gutterBottom sx={{ fontFamily: '"Great Vibes", cursive', color: '#D4AF37', wordBreak: 'break-word' }}>
                             RSVP
                         </Typography>
                         <Typography variant="body1" sx={{ fontSize: '1.2rem', color: '#555', maxWidth: '600px', mx: 'auto' }}>
