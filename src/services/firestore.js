@@ -21,16 +21,19 @@ export const GuestService = {
   // Check if guest exists by email
   checkDuplicateEmail: async (email) => {
     if (!email) return false;
-    // We will assume the AI tool will use this.
-    return false; // dynamic check implementation below
+    const q = query(collection(db, GUESTS_COLLECTION), where('email', '==', email.toLowerCase()));
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
   },
 
   // Add a new guest (Admin or AI)
   addGuest: async (guestData) => {
     // Basic duplicate check by email if provided
     if (guestData.email) {
-       // We'll trust the caller to handle duplicates or we can query here.
-       // For now, let's just add.
+       const isDuplicate = await GuestService.checkDuplicateEmail(guestData.email);
+       if (isDuplicate) {
+          throw new Error("This email has already been used to RSVP.");
+       }
     }
     return await addDoc(collection(db, GUESTS_COLLECTION), {
       ...guestData,
@@ -63,6 +66,28 @@ export const GuestService = {
     }, (error) => {
       if (onError) onError(error);
       else console.error("Firestore Subscribe Error:", error);
+    });
+  },
+
+  // Get total guest count (real-time listener)
+  subscribeToGuestCount: (callback, onError) => {
+    const q = query(
+      collection(db, GUESTS_COLLECTION),
+      where('attending', '==', 'yes')
+    );
+    return onSnapshot(q, (snapshot) => {
+      let total = 0;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        total += 1; // The guest themselves
+        if (data.plusOnes) {
+          total += parseInt(data.plusOnes) || 0;
+        }
+      });
+      callback(total);
+    }, (error) => {
+      if (onError) onError(error);
+      else console.error("Guest Count Subscribe Error:", error);
     });
   },
   

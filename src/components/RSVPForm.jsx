@@ -49,7 +49,11 @@ const RSVPForm = () => {
       setSubmitted(true);
     } catch (err) {
       console.error(err);
-      setError('Something went wrong. Please try again.');
+      if (err.message === "This email has already been used to RSVP.") {
+         setError(err.message);
+      } else {
+         setError('Something went wrong. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

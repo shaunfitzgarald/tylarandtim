@@ -56,7 +56,7 @@ exports.weddingAssistantV2 = onRequest({ cors: true, invoker: 'public' }, async 
           ${contextText}
           
           RSVP INSTRUCTIONS (CRITICAL):
-          If the user wants to RSVP, you MUST follow these exact steps:
+          If the user wants to RSVP, you MUST follow these exact steps step-by-step:
           1. Actively guide them through the RSVP process.
           2. Ask for missing information one by one, or multiple at once, if they haven't provided it. You need:
              - First Name
@@ -65,7 +65,7 @@ exports.weddingAssistantV2 = onRequest({ cors: true, invoker: 'public' }, async 
              - Will they be attending? (Yes/No)
              - Number of guests/plus ones bringing with them (0, 1, 2, or 3)
              - Any dietary restrictions or notes?
-          3. Once you have ALL 6 pieces of information, and the user has confirmed them, you MUST output a hidden JSON block exactly matching this format anywhere in your response:
+          3. CRITICAL: Once you have ALL 6 pieces of information, and the user has confirmed them, DO NOT ask any further questions. You MUST immediately and ONLY output a hidden JSON block exactly matching this format anywhere in your response:
           
           :::RSVP:::
           {
@@ -78,8 +78,8 @@ exports.weddingAssistantV2 = onRequest({ cors: true, invoker: 'public' }, async 
           }
           :::END_RSVP:::
           
-          Note for JSON: attending MUST be strictly "yes" or "no". plusOnes MUST be an integer 0, 1, 2, or 3.
-          DO NOT output the JSON block until all details are finalized. You can include a conversational confirmation message alongside the block like "Thank you! Your RSVP has been saved."
+          Note for JSON: "attending" MUST be strictly "yes" or "no". "plusOnes" MUST be an integer 0, 1, 2, or 3.
+          DO NOT output the JSON block until all details are finalized. You can include a conversational confirmation message alongside the block like "Thank you! Your RSVP has been saved." BUT you MUST include the :::RSVP::: block if all information is gathered and confirmed.
         `;
         
       const model = genAI.getGenerativeModel({ 
@@ -108,17 +108,29 @@ exports.weddingAssistantV2 = onRequest({ cors: true, invoker: 'public' }, async 
               // Clean the block from the output
               textOut = textOut.replace(match[0], '').trim();
               
-              // Save to Firestore
-              await db.collection('rsvps').add({
-                  ...rsvpData,
-                  fullName: `${rsvpData.firstName} ${rsvpData.lastName}`,
-                  createdAt: new Date(),
-                  rsvpStatus: rsvpData.attending === 'yes' ? 'attending' : 'not_attending',
-                  hasPlusOne: parseInt(rsvpData.plusOnes) > 0,
-                  plusOneCount: parseInt(rsvpData.plusOnes) || 0,
-                  order: 0,
-                  source: 'ai_assistant'
-              });
+              // Save to Firestore. Check duplicate email first
+              if (!rsvpData.email) {
+                  throw new Error("No email provided in RSVP data");
+              }
+
+              const lowercaseEmail = rsvpData.email.toLowerCase();
+              const existingRSVP = await db.collection('rsvps').where('email', '==', lowercaseEmail).get();
+              
+              if (!existingRSVP.empty) {
+                  textOut = "Hmm, it looks like an RSVP with that email address has already been submitted. Please use a different email or hit up Tylar and Timothy if you need to make changes!";
+              } else {
+                  await db.collection('rsvps').add({
+                      ...rsvpData,
+                      email: lowercaseEmail,
+                      fullName: `${rsvpData.firstName} ${rsvpData.lastName}`,
+                      createdAt: new Date(),
+                      rsvpStatus: rsvpData.attending === 'yes' ? 'attending' : 'not_attending',
+                      hasPlusOne: parseInt(rsvpData.plusOnes) > 0,
+                      plusOneCount: parseInt(rsvpData.plusOnes) || 0,
+                      order: 0,
+                      source: 'ai_assistant'
+                  });
+              }
               
           } catch (e) {
               console.error("Failed to parse or save RSVP JSON", e);
