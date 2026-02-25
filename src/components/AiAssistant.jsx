@@ -78,11 +78,14 @@ const AiAssistant = () => {
         setLoading(true);
 
         try {
-            const functions = getFunctions();
-            const askAi = httpsCallable(functions, 'weddingAssistant');
-            const result = await askAi({ question: userMessage });
+            const response = await fetch('https://us-central1-tylarandtim.cloudfunctions.net/weddingAssistantV2', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: { question: input } })
+            });
+            const result = await response.json();
             
-            const aiResponse = result.data.answer;
+            const aiResponse = result.data?.answer || result.answer || "I seem to be having trouble articulating myself right now.";
             setMessages(prev => [...prev, { text: aiResponse, sender: 'system' }]);
         } catch (error) {
             console.error(error);
