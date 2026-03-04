@@ -1,9 +1,17 @@
 import { Box, Typography, Button, Grid, Card, CardContent, CardActions } from '@mui/material';
 import GeometricBorder from './GeometricBorder';
 import FlightSearch from './FlightSearch';
-import { useContent } from '../hooks/useContent';
+
 
 const hotels = [
+  {
+    name: "Waikiki Beach Marriott Resort & Spa",
+    description: "Premium resort located steps from Waikiki Beach.",
+    address: "2552 Kalākaua Ave, Honolulu, HI 96815",
+    link: "https://www.marriott.com/en-us/hotels/hnlmc-waikiki-beach-marriott-resort-and-spa/overview/",
+    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.587886470877!2d-157.8248889842702!3d21.26914618044031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c007270d4265403%3A0x67ad7ecb9a89b09!2sWaikiki%20Beach%20Marriott%20Resort%20%26%20Spa!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
+    price: "$$$"
+  },
   {
     name: "The Royal Hawaiian",
     description: "The Pink Palace of the Pacific. Historic luxury on Waikiki Beach.",
@@ -55,15 +63,6 @@ const hotels = [
 ];
 
 const Info = () => {
-  const { content } = useContent('wedding_details', {
-    ceremonyDate: 'Saturday, September 6, 2026',
-    ceremonyTime: '4:00 PM - 10:00 PM',
-    venueName: 'Kualoa Ranch',
-    venueAddress: '49-560 Kamehameha Hwy\nKaneohe, HI 96744',
-    dressCode: 'Black Tie Optional',
-    dressCodeDesc: 'We ask that men wear tuxedos or dark suits and women wear evening gowns or midi cocktail dresses.'
-  });
-
   return (
     <Box sx={{ py: { xs: 4, md: 8 } }}>
         <GeometricBorder sx={{ p: { xs: 2.5, md: 6 }, textAlign: 'center' }}>
@@ -71,38 +70,11 @@ const Info = () => {
                 Wedding Weekend Details
             </Typography>
 
-            <Grid container spacing={4} sx={{ mb: 6, textAlign: 'left' }}>
-                <Grid item xs={12} md={6}>
-                    <Typography variant="h4" gutterBottom sx={{ fontFamily: '"Cormorant Garamond", serif', borderBottom: '1px solid #D4AF37', pb: 1 }}>
-                        Ceremony & Reception
-                    </Typography>
-                    <Typography variant="h6">{content.ceremonyDate}</Typography>
-                    <Typography variant="body1">{content.ceremonyTime}</Typography>
-                    <Typography variant="body1" sx={{ mt: 2, whiteSpace: 'pre-line' }}>
-                        **{content.venueName}**<br />
-                        {content.venueAddress}
-                    </Typography>
-                    <Button 
-                        variant="outlined" 
-                        sx={{ mt: 2 }}
-                        href="https://goo.gl/maps/placeholder"
-                        target="_blank"
-                    >
-                        View Map
-                    </Button>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Typography variant="h4" gutterBottom sx={{ fontFamily: '"Cormorant Garamond", serif', borderBottom: '1px solid #D4AF37', pb: 1 }}>
-                        {content.dressCode}
-                    </Typography>
-                    <Typography variant="body1" sx={{ mt: 2 }}>
-                        {content.dressCodeDesc}
-                    </Typography>
-                    <Typography variant="body1" sx={{ mt: 2, fontStyle: 'italic' }}>
-                        Please note the ceremony will be on grass, so block heels are recommended.
-                    </Typography>
-                </Grid>
-            </Grid>
+            <Box sx={{ mb: 6, textAlign: 'center' }}>
+                <Typography variant="body1" sx={{ fontStyle: 'italic', fontSize: '1.2rem', color: 'text.secondary' }}>
+                    (the wedding venue is currently a secret)
+                </Typography>
+            </Box>
 
             <Typography variant="h2" gutterBottom sx={{ color: 'primary.main', mb: 4 }}>
                 Accommodations
@@ -111,9 +83,9 @@ const Info = () => {
                 We have secured room blocks at the following hotels. Please reference the **Tylar & Tim Wedding** when booking.
             </Typography>
 
-            <Grid container spacing={3}>
+            <Grid container spacing={3} justifyContent="center" alignItems="stretch">
                 {hotels.map((hotel, index) => (
-                    <Grid item xs={12} md={4} key={index}>
+                    <Grid item xs={12} sm={6} md={4} key={index}>
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', border: '1px solid #eee' }}>
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" component="div" gutterBottom>
