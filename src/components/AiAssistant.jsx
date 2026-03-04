@@ -3,12 +3,13 @@ import { Box, Paper, TextField, IconButton, Typography, CircularProgress, Fab } 
 import SendIcon from '@mui/icons-material/Send';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import CloseIcon from '@mui/icons-material/Close';
-import { httpsCallable } from 'firebase/functions';
-import { getFunctions } from 'firebase/functions';
+
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 
 import MicIcon from '@mui/icons-material/Mic';
 import StopIcon from '@mui/icons-material/Stop';
+import ReactMarkdown from 'react-markdown';
 
 const AiAssistant = () => {
     const [open, setOpen] = useState(false);
@@ -176,10 +177,21 @@ const AiAssistant = () => {
                                             borderRadius: 2,
                                             maxWidth: '80%',
                                             boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                                            fontSize: '0.95rem'
+                                            fontSize: '0.95rem',
+                                            '& p': { m: 0 } // Remove default paragraph margins
                                         }}
                                     >
-                                        {msg.text}
+                                        <ReactMarkdown 
+                                            components={{
+                                                a: (props) => {
+                                                    // eslint-disable-next-line no-unused-vars
+                                                    const {node, ...rest} = props;
+                                                    return <a style={{ color: msg.sender === 'user' ? 'white' : '#D4AF37', fontWeight: 'bold' }} target="_blank" rel="noopener noreferrer" {...rest} />;
+                                                }
+                                            }}
+                                        >
+                                            {msg.text}
+                                        </ReactMarkdown>
                                     </Box>
                                 ))}
                                 {loading && (
