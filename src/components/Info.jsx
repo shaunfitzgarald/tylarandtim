@@ -5,60 +5,20 @@ import FlightSearch from './FlightSearch';
 
 const hotels = [
   {
-    name: "Waikiki Beach Marriott Resort & Spa",
-    description: "Premium resort located steps from Waikiki Beach.",
-    address: "2552 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.marriott.com/en-us/hotels/hnlmc-waikiki-beach-marriott-resort-and-spa/overview/",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.587886470877!2d-157.8248889842702!3d21.26914618044031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c007270d4265403%3A0x67ad7ecb9a89b09!2sWaikiki%20Beach%20Marriott%20Resort%20%26%20Spa!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
-    price: "$$$"
-  },
-  {
-    name: "The Royal Hawaiian",
-    description: "The Pink Palace of the Pacific. Historic luxury on Waikiki Beach.",
-    address: "2259 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.royal-hawaiian.com/",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.394979185633!2d-157.82949642426992!3d21.275634980436952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006d87196029e5%3A0xc3af00135d96c8c7!2sThe%20Royal%20Hawaiian%2C%20a%20Luxury%20Collection%20Resort%2C%20Waikiki!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
-    price: "$$$$"
-  },
-  {
-    name: "Moana Surfrider",
-    description: "A Westin Resort & Spa. 'The First Lady of Waikiki'. Victorian elegance.",
-    address: "2365 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.marriott.com/en-us/hotels/hnlwa-moana-surfrider-a-westin-resort-and-spa-waikiki-beach/overview/",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.441864115865!2d-157.82772592427003!3d21.273872980437796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c0072710344b563%3A0x6e9c40e53a5160b7!2sMoana%20Surfrider%2C%20A%20Westin%20Resort%20%26%20Spa%2C%20Waikiki%20Beach!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
-    price: "$$$"
-  },
-  {
-    name: "Sheraton Waikiki",
-    description: "Modern comfort with infinity pool and breathtaking ocean views.",
-    address: "2255 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.marriott.com/en-us/hotels/hnlws-sheraton-waikiki/overview/",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.3912648875323!2d-157.82969962426992!3d21.275774580436892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006d8711420d91%3A0x2600863920700078!2sSheraton%20Waikiki!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
-    price: "$$$"
-  },
-  {
-    name: "Alohilani Resort",
-    description: "Chic, modern resort featuring a standard-setting oceanarium.",
-    address: "2490 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.alohilaniresort.com/",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.525868645063!2d-157.82522792427015!3d21.2707149804393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c007276d49925e1%3A0x608e682247167512!2s%27Alohilani%20Resort%20Waikiki%20Beach!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
+    name: "Aston Waikiki Beach",
+    description: "Beautiful beachfront resort located in the heart of Waikiki.",
+    address: "2570 Kalākaua Ave, Honolulu, HI 96815",
+    link: "https://www.twinfinwaikiki.com/",
+    mapUrl: "https://maps.google.com/maps?q=Aston+Waikiki+Beach+Honolulu&t=&z=15&ie=UTF8&iwloc=&output=embed",
     price: "$$"
   },
   {
-    name: "Hyatt Regency Waikiki",
-    description: "Twin towers offering spacious rooms and cultural center.",
-    address: "2424 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.hyatt.com/en-US/hotel/hawaii/hyatt-regency-waikiki-beach-resort-and-spa/hnlrw",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.4812328148965!2d-157.8266203242701!3d21.27239308043851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c007273934f593b%3A0xcd3e680a6c6a49db!2sHyatt%20Regency%20Waikiki%20Beach%20Resort%20%26%20Spa!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
-    price: "$$"
-  },
-  {
-    name: "Outrigger Waikiki",
-    description: "Home of Duke's Waikiki, right on the sand.",
-    address: "2335 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.outrigger.com/hawaii/oahu/outrigger-waikiki-beach-resort",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.425985834863!2d-157.82823632426997!3d21.274469780437517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006d878772960f%3A0x8e5f29f07449339e!2sOutrigger%20Waikiki%20Beach%20Resort!5e0!3m2!1sen!2sus!4v1708226000000!5m2!1sen!2sus",
-    price: "$$"
+    name: "Hilton Hawaiian Village",
+    description: "Vast resort on Waikiki's widest stretch of beach, featuring multiple pools and dining options.",
+    address: "2005 Kalia Road, Honolulu, HI 96815",
+    link: "https://www.hiltonhawaiianvillage.com/",
+    mapUrl: "https://maps.google.com/maps?q=Hilton+Hawaiian+Village&t=&z=15&ie=UTF8&iwloc=&output=embed",
+    price: "$$$"
   }
 ];
 
@@ -80,13 +40,13 @@ const Info = () => {
                 Accommodations
             </Typography>
             <Typography variant="body1" sx={{ mb: 4 }}>
-                We have secured room blocks at the following hotels. Please reference the **Tylar & Tim Wedding** when booking.
+                Contact <a href="mailto:support@shaunfitzgarald.com" style={{ color: 'inherit', textDecoration: 'underline' }}>Shaun</a> for booking details and instructions, as we have the hookup on rooms here!
             </Typography>
 
             <Grid container spacing={3} justifyContent="center" alignItems="stretch">
                 {hotels.map((hotel, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', border: '1px solid #eee' }}>
+                    <Grid item xs={12} sm={6} md={6} key={index} sx={{ display: 'flex' }}>
+                        <Card sx={{ width: '100%', display: 'flex', flexDirection: 'column', border: '1px solid #eee' }}>
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" component="div" gutterBottom>
                                     {hotel.name}
