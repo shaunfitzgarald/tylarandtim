@@ -5,12 +5,12 @@ import FlightSearch from './FlightSearch';
 
 const hotels = [
   {
-    name: "Aston Waikiki Beach",
-    description: "Beautiful beachfront resort located in the heart of Waikiki.",
-    address: "2570 Kalākaua Ave, Honolulu, HI 96815",
-    link: "https://www.twinfinwaikiki.com/",
-    mapUrl: "https://maps.google.com/maps?q=Aston+Waikiki+Beach+Honolulu&t=&z=15&ie=UTF8&iwloc=&output=embed",
-    price: "$$"
+    name: "The Grand Islander Waikiki",
+    description: "Luxurious all-suite resort within the Hilton Hawaiian Village, offering spacious accommodations with full kitchens and private balconies.",
+    address: "2023 Kalia Road, Honolulu, HI 96815",
+    link: "https://www.hilton.com/en/hotels/hnlgigv-the-grand-islander-by-hilton-grand-vacations/",
+    mapUrl: "https://maps.google.com/maps?q=The+Grand+Islander+by+Hilton+Grand+Vacations&t=&z=15&ie=UTF8&iwloc=&output=embed",
+    price: "$$$"
   },
   {
     name: "Hilton Hawaiian Village",
