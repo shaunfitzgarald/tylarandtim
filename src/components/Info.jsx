@@ -5,11 +5,11 @@ import FlightSearch from './FlightSearch';
 
 const hotels = [
   {
-    name: "The Grand Islander Waikiki",
+    name: "The Grand Islander, a Hilton Grand Vacations Club",
     description: "Luxurious all-suite resort within the Hilton Hawaiian Village, offering spacious accommodations with full kitchens and private balconies.",
     address: "2023 Kalia Road, Honolulu, HI 96815",
-    link: "https://www.hilton.com/en/hotels/hnlgigv-the-grand-islander-by-hilton-grand-vacations/",
-    mapUrl: "https://maps.google.com/maps?q=The+Grand+Islander+by+Hilton+Grand+Vacations&t=&z=15&ie=UTF8&iwloc=&output=embed",
+    link: "https://www.hiltongrandvacations.com/en/resorts-and-destinations/hawaii/oahu/the-grand-islander-by-hilton-grand-vacations",
+    mapUrl: "https://maps.google.com/maps?q=The+Grand+Islander,+a+Hilton+Grand+Vacations+Club&t=&z=15&ie=UTF8&iwloc=&output=embed",
     price: "$$$"
   },
   {
