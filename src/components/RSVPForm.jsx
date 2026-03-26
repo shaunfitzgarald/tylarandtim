@@ -59,6 +59,27 @@ const RSVPForm = () => {
     }
   };
 
+  const deadline = new Date('2026-06-03T23:59:59');
+  const isAfterDeadline = new Date() > deadline;
+
+  if (isAfterDeadline) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: { xs: 1, md: 2 } }}>
+        <GeometricBorder sx={{ maxWidth: '600px', width: '100%', p: { xs: 4, md: 6 }, textAlign: 'center' }}>
+          <Typography variant="h4" sx={{ color: '#D4AF37', mb: 3, fontFamily: '"Great Vibes", cursive' }}>
+            RSVP Closed
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 4, color: '#555' }}>
+            We're so sorry, but the deadline to RSVP has passed. We needed to finalize our guest list by June 3rd to send out invitations.
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#888' }}>
+            If you need assistance or believe there has been a mistake, please reach out to us at <a href="mailto:support@shaunfitzgarald.com" style={{ color: '#D4AF37', textDecoration: 'none', fontWeight: 'bold' }}>support@shaunfitzgarald.com</a>.
+          </Typography>
+        </GeometricBorder>
+      </Box>
+    );
+  }
+
   if (submitted) {
     return (
       <Box sx={{ p: 4, textAlign: 'center' }}>
