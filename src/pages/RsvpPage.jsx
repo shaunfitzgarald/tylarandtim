@@ -23,7 +23,7 @@ const RsvpPage = () => {
                             RSVP
                         </Typography>
                         <Typography variant="body1" sx={{ fontSize: '1.2rem', color: '#555', maxWidth: '600px', mx: 'auto' }}>
-                            We can't wait to celebrate with you! Please let us know if you'll be joining us by September 6, 2026.
+                            We can't wait to celebrate with you! To ensure you receive your official invitation, please kindly RSVP by June 3rd, 2026.
                         </Typography>
                         <Box sx={{ mt: 3, p: 2, display: 'inline-block', border: '1px solid #D4AF37', borderRadius: '8px', backgroundColor: 'rgba(212, 175, 55, 0.05)' }}>
                              <Typography variant="h6" sx={{ color: '#D4AF37', fontWeight: 'bold' }}>
