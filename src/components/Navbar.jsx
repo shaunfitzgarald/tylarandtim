@@ -12,7 +12,7 @@ const Navbar = () => {
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Gallery', path: '/gallery' },
-    { label: 'RSVP', path: '/rsvp' }
+    { label: 'RSVP', path: '/#rsvp-section' }
   ];
 
   const handleDrawerToggle = () => {
@@ -90,8 +90,8 @@ const Navbar = () => {
                 color="inherit"
                 sx={{ 
                     fontWeight: location.pathname === item.path ? 700 : 400,
-                    border: item.path === '/rsvp' ? '1px solid #D4AF37' : 'none',
-                    px: item.path === '/rsvp' ? 3 : 1
+                    border: item.label === 'RSVP' ? '1px solid #D4AF37' : 'none',
+                    px: item.label === 'RSVP' ? 3 : 1
                 }}
             >
                 {item.label}
