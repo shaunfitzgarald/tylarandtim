@@ -4,7 +4,6 @@ import theme from './theme';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import Gallery from './pages/Gallery';
-import RsvpPage from './pages/RsvpPage';
 import AiAssistant from './components/AiAssistant';
 
 import Navbar from './components/Navbar';
@@ -18,7 +17,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/rsvp" element={<RsvpPage />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </Router>
