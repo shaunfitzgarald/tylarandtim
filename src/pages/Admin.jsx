@@ -7,6 +7,7 @@ import GuestManager from '../admin/GuestManager';
 import PhotoManager from '../admin/PhotoManager';
 import ContentEditor from '../admin/ContentEditor';
 import SeatingChart from '../admin/SeatingChart';
+import RegistryManager from '../admin/RegistryManager';
 
 const Admin = () => {
     const [tab, setTab] = useState(0);
@@ -48,6 +49,7 @@ const Admin = () => {
                     <Tab label="Seating Chart" />
                     <Tab label="Photo Gallery" />
                     <Tab label="Site Content" />
+                    <Tab label="Gift Registry" />
                 </Tabs>
             </Box>
 
@@ -55,6 +57,7 @@ const Admin = () => {
             {tab === 1 && <SeatingChart />}
             {tab === 2 && <PhotoManager />}
             {tab === 3 && <ContentEditor />}
+            {tab === 4 && <RegistryManager />}
         </Container>
     );
 };

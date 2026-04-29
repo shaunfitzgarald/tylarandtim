@@ -126,3 +126,81 @@ export const ContentService = {
     return await updateDoc(docRef, data); // or setDoc with merge: true
   }
 };
+
+const REGISTRY_COLLECTION = 'registry_items';
+
+export const RegistryService = {
+  // Subscribe to the global registry config (enabled/disabled)
+  subscribeToConfig: (callback, onError) => {
+    const docRef = doc(db, CONTENT_COLLECTION, 'registry_config');
+    return onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        callback(docSnap.data());
+      } else {
+        callback({ enabled: false }); // Default if missing
+      }
+    }, (error) => {
+      if (onError) onError(error);
+      else console.error("Registry Config Subscribe Error:", error);
+    });
+  },
+
+  // Update global registry config
+  updateConfig: async (enabled) => {
+    const docRef = doc(db, CONTENT_COLLECTION, 'registry_config');
+    // Using updateDoc might fail if it doesn't exist, but since ContentService 
+    // is used similarly, we assume it's created or we can use setDoc. 
+    // We'll use ContentService.updateContent but handle creation if needed.
+    // Wait, updateDoc fails if the document doesn't exist. Let's use setDoc if necessary,
+    // but importing setDoc might be needed. For now, we'll assume it exists or use setDoc.
+    // Let's import setDoc at the top.
+    const { setDoc } = await import('firebase/firestore');
+    return await setDoc(docRef, { enabled }, { merge: true });
+  },
+
+  // Subscribe to registry items
+  subscribeToItems: (callback, onError) => {
+    const q = query(collection(db, REGISTRY_COLLECTION), orderBy('createdAt', 'desc'));
+    return onSnapshot(q, (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      callback(items);
+    }, (error) => {
+      if (onError) onError(error);
+      else console.error("Registry Items Subscribe Error:", error);
+    });
+  },
+
+  // Add a new registry item
+  addItem: async (itemData) => {
+    return await addDoc(collection(db, REGISTRY_COLLECTION), {
+      ...itemData,
+      createdAt: new Date(),
+    });
+  },
+
+  // Delete a registry item
+  deleteItem: async (id) => {
+    const itemRef = doc(db, REGISTRY_COLLECTION, id);
+    return await deleteDoc(itemRef);
+  },
+
+  // Mark an item as purchased
+  markItemPurchased: async (id, buyerName) => {
+    const itemRef = doc(db, REGISTRY_COLLECTION, id);
+    return await updateDoc(itemRef, {
+      purchased: true,
+      purchasedBy: buyerName || 'Anonymous',
+      purchasedAt: new Date()
+    });
+  },
+
+  // Unmark an item as purchased (Admin)
+  unmarkItemPurchased: async (id) => {
+    const itemRef = doc(db, REGISTRY_COLLECTION, id);
+    return await updateDoc(itemRef, {
+      purchased: false,
+      purchasedBy: null,
+      purchasedAt: null
+    });
+  }
+};

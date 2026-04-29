@@ -1,17 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Button, Box, Typography, IconButton, Drawer, List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation } from 'react-router-dom';
+import { RegistryService } from '../services/firestore';
 
 const Navbar = () => {
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [registryEnabled, setRegistryEnabled] = useState(false);
+
+  useEffect(() => {
+      const unsub = RegistryService.subscribeToConfig((data) => {
+          setRegistryEnabled(data?.enabled || false);
+      });
+      return () => unsub();
+  }, []);
 
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Gallery', path: '/gallery' },
+    ...(registryEnabled ? [{ label: 'Registry', path: '/registry' }] : []),
     { label: 'RSVP', path: '/#rsvp-section' }
   ];
 

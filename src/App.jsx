@@ -6,6 +6,7 @@ import Admin from './pages/Admin';
 import Gallery from './pages/Gallery';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Registry from './pages/Registry';
 import AiAssistant from './components/AiAssistant';
 
 import Navbar from './components/Navbar';
@@ -25,6 +26,7 @@ function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />
+              <Route path="/registry" element={<Registry />} />
             </Routes>
           </Box>
           <Footer />
