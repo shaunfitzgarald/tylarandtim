@@ -39,9 +39,33 @@ const Info = () => {
                 <Typography variant="h2" gutterBottom sx={{ color: 'primary.main', mb: 4 }}>
                     Accommodations
                 </Typography>
-                <Typography variant="body1" sx={{ mb: 4 }}>
-                    Contact <a href="mailto:support@shaunfitzgarald.com" style={{ color: 'inherit', textDecoration: 'underline' }}>Shaun</a> for booking details and instructions, as we have the hookup on rooms here!
-                </Typography>
+                <Box sx={{ mb: 5, textAlign: 'center' }}>
+                    {/* <Typography variant="body1" sx={{ mb: 3 }}>
+                        Contact <a href="mailto:support@shaunfitzgarald.com" style={{ color: 'inherit', textDecoration: 'underline' }}>Shaun</a> if you have any questions, but make sure to use our wedding discount when booking!
+                    </Typography> */}
+                    <Box sx={{ 
+                        display: 'inline-block', 
+                        textAlign: 'left', 
+                        bgcolor: 'background.paper', 
+                        p: 3, 
+                        borderRadius: 2, 
+                        boxShadow: 2,
+                        borderTop: '4px solid',
+                        borderColor: 'primary.main'
+                    }}>
+                        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1.5, color: 'primary.main', textAlign: 'center' }}>
+                            Guest Room Wedding Discount!!
+                        </Typography>
+                        <ol style={{ margin: 0, paddingLeft: '20px', lineHeight: '1.8' }}>
+                            <li>Go to <a href="https://www.hiltonhawaiianvillage.com" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 'bold' }}>www.HiltonHawaiianVillage.com</a></li>
+                            <li>Put in the dates</li>
+                            <li>Click on <strong>Special Rates</strong></li>
+                            <li>Enter <strong>WED</strong> in the Group Code box</li>
+                            <li>Click <strong>Done</strong></li>
+                            <li>Then click <strong>Check Rates</strong> for a <strong>20% discount</strong> off regular rates</li>
+                        </ol>
+                    </Box>
+                </Box>
 
                 <Grid container spacing={3} justifyContent="center" alignItems="stretch">
                     {hotels.map((hotel, index) => (
