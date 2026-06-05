@@ -42,7 +42,7 @@ const Home = () => {
                                 RSVP
                             </Typography>
                             <Typography variant="body1" sx={{ fontSize: '1.2rem', color: '#555', maxWidth: '600px', mx: 'auto' }}>
-                                We can't wait to celebrate with you! To ensure you receive your official invitation, please kindly RSVP by June 3rd, 2026.
+                                We can't wait to celebrate with you! To ensure you receive your official invitation, please kindly RSVP by August 8th, 2026.
                             </Typography>
                             {/* <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                                 <GeometricBorder sx={{ 
