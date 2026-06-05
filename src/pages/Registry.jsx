@@ -60,6 +60,9 @@ const Registry = () => {
                 <Typography variant="body1" color="text.secondary" maxWidth="sm" mx="auto">
                     Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, we have registered for a few items below.
                 </Typography>
+                <Typography variant="body1" color="text.secondary" maxWidth="sm" mx="auto" sx={{ mt: 2 }}>
+                    Please use the email tylar.zanders18@gmail.com for all egiftcards.
+                </Typography>
             </Box>
 
             <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={3}>
