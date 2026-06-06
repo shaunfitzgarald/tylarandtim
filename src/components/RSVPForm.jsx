@@ -70,7 +70,7 @@ const RSVPForm = () => {
             RSVP Closed
           </Typography>
           <Typography variant="body1" sx={{ mb: 4, color: '#555' }}>
-            We're so sorry, but the deadline to RSVP has passed. We needed to finalize our guest list by June 3rd to send out invitations.
+            We're so sorry, but the deadline to RSVP has passed. We needed to finalize our guest list by August 8th to send out invitations.
           </Typography>
           <Typography variant="body2" sx={{ color: '#888' }}>
             If you need assistance or believe there has been a mistake, please reach out to us at <a href="mailto:support@shaunfitzgarald.com" style={{ color: '#D4AF37', textDecoration: 'none', fontWeight: 'bold' }}>support@shaunfitzgarald.com</a>.
