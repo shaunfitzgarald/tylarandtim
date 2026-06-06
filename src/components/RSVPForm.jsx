@@ -59,7 +59,7 @@ const RSVPForm = () => {
     }
   };
 
-  const deadline = new Date('2026-06-03T23:59:59');
+  const deadline = new Date('2026-08-08T23:59:59');
   const isAfterDeadline = new Date() > deadline;
 
   if (isAfterDeadline) {
