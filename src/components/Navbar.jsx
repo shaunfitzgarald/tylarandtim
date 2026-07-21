@@ -9,11 +9,11 @@ const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [registryEnabled, setRegistryEnabled] = useState(false);
+  const [registryEnabled, setRegistryEnabled] = useState(true);
 
   useEffect(() => {
       const unsub = RegistryService.subscribeToConfig((data) => {
-          setRegistryEnabled(data?.enabled || false);
+          setRegistryEnabled(data?.enabled !== false);
       });
       return () => unsub();
   }, []);
