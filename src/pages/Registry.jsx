@@ -3,12 +3,14 @@ import { Container, Typography, Box, Paper, Button, Dialog, DialogTitle, DialogC
 import Masonry from '@mui/lab/Masonry';
 import { motion } from 'framer-motion';
 import { RegistryService } from '../services/firestore';
-import { Link } from 'react-router-dom';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 const MotionPaper = motion.create(Paper);
 
+const AMAZON_REGISTRY_URL = 'https://www.amazon.com/wedding/share/TimothyandTylar?dplnkId=ec0e90a9-fc33-45fc-8b87-ff0436c7da54&dplnk=Y&ref_=aau_ios_h5f';
+
 const Registry = () => {
-    const [config, setConfig] = useState({ enabled: null });
     const [items, setItems] = useState([]);
     const [purchaseDialog, setPurchaseDialog] = useState({ open: false, itemId: null, buyerName: '' });
 
@@ -23,139 +25,181 @@ const Registry = () => {
     };
 
     useEffect(() => {
-        const unsubConfig = RegistryService.subscribeToConfig((data) => setConfig(data));
         const unsubItems = RegistryService.subscribeToItems((data) => setItems(data));
         return () => {
-            unsubConfig();
             unsubItems();
         };
     }, []);
 
-    if (config.enabled === null) {
-        return <Box sx={{ p: 4, textAlign: 'center' }}>Loading...</Box>;
-    }
-
-    if (!config.enabled) {
-        return (
-            <Container maxWidth="md" sx={{ py: 10, textAlign: 'center' }}>
-                <Typography variant="h3" sx={{ fontFamily: '"Great Vibes", cursive', textTransform: 'none', color: 'primary.main', mb: 3 }}>
-                    Gift Registry
-                </Typography>
-                <Typography variant="h6" color="text.secondary" paragraph>
-                    Our registry is not quite ready yet. Please check back closer to the wedding date!
-                </Typography>
-                <Button variant="outlined" component={Link} to="/" sx={{ mt: 2 }}>
-                    Return Home
-                </Button>
-            </Container>
-        );
-    }
-
     return (
         <Container maxWidth="xl" sx={{ py: 6, minHeight: '100vh', backgroundColor: '#fafafa' }}>
-            <Box sx={{ textAlign: 'center', mb: 6 }}>
+            <Box sx={{ textAlign: 'center', mb: 5 }}>
                 <Typography variant="h2" sx={{ fontFamily: '"Great Vibes", cursive', textTransform: 'none', color: 'primary.main', mb: 2 }}>
                     Gift Registry
                 </Typography>
-                <Typography variant="body1" color="text.secondary" maxWidth="sm" mx="auto">
-                    Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, we have registered for a few items below.
-                </Typography>
-                <Typography variant="body1" color="text.secondary" maxWidth="sm" mx="auto" sx={{ mt: 2 }}>
-                    Please use the email tylar.zanders18@gmail.com for all egiftcards.
+                <Typography variant="body1" color="text.secondary" maxWidth="sm" mx="auto" sx={{ fontSize: '1.2rem' }}>
+                    Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, we have registered on Amazon.
                 </Typography>
             </Box>
 
-            <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={3}>
-                {items.map((item, index) => (
-                    <MotionPaper
-                        key={item.id}
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        elevation={2}
+            {/* Amazon Registry Featured Card */}
+            <Box sx={{ maxWidth: 700, mx: 'auto', mb: 6 }}>
+                <Paper
+                    elevation={4}
+                    sx={{
+                        p: { xs: 3, md: 5 },
+                        borderRadius: 4,
+                        textAlign: 'center',
+                        background: 'linear-gradient(135deg, #ffffff 0%, #fffdf7 100%)',
+                        border: '1px solid rgba(212, 175, 55, 0.4)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        boxShadow: '0 10px 30px rgba(212, 175, 55, 0.15)',
+                    }}
+                >
+                    <Box
                         sx={{
-                            borderRadius: 4,
-                            overflow: 'hidden',
-                            position: 'relative',
-                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 64,
+                            height: 64,
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(212, 175, 55, 0.12)',
+                            color: 'primary.main',
+                            mb: 2
+                        }}
+                    >
+                        <CardGiftcardIcon sx={{ fontSize: 36 }} />
+                    </Box>
+
+                    <Typography variant="h4" sx={{ fontFamily: '"Cormorant Garamond", serif', fontWeight: 600, mb: 1, color: '#1A1A1A' }}>
+                        Amazon Wedding Registry
+                    </Typography>
+
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 3, maxWidth: 500, mx: 'auto' }}>
+                        Browse our complete wishlist on Amazon for our home and future together.
+                    </Typography>
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        href={AMAZON_REGISTRY_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        endIcon={<OpenInNewIcon />}
+                        sx={{
+                            py: 1.5,
+                            px: 4,
+                            fontSize: '1.1rem',
+                            fontWeight: 700,
+                            borderRadius: 2,
+                            textTransform: 'none',
+                            boxShadow: '0 4px 14px rgba(212, 175, 55, 0.4)',
+                            transition: 'all 0.3s ease',
                             '&:hover': {
-                                transform: 'translateY(-8px)',
-                                boxShadow: 6,
-                                '& .overlay': {
-                                    opacity: 1
-                                }
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 6px 20px rgba(212, 175, 55, 0.6)',
                             }
                         }}
                     >
-                        <Box sx={{ position: 'relative', bgcolor: '#fff', pt: 2, px: 2, opacity: item.purchased ? 0.6 : 1 }}>
-                            <Box
-                                component="img"
-                                src={item.image || 'https://via.placeholder.com/400x400?text=Gift'}
-                                alt={item.title}
-                                sx={{
-                                    width: '100%',
-                                    height: 'auto',
-                                    objectFit: 'contain',
-                                    maxHeight: 300,
-                                    borderRadius: 2
-                                }}
-                            />
-                            {item.purchased && (
-                                <Box sx={{
-                                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                                    bgcolor: 'rgba(0,0,0,0.7)', color: 'white', px: 2, py: 1, borderRadius: 2,
-                                    fontWeight: 'bold', letterSpacing: 1
-                                }}>
-                                    PURCHASED
-                                </Box>
-                            )}
-                        </Box>
-                        
-                        <Box sx={{ p: 3, opacity: item.purchased ? 0.6 : 1 }}>
-                            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                                {item.title}
-                            </Typography>
-                            {item.price && item.showPrice !== false && (
-                                <Typography variant="subtitle1" color="primary.main" sx={{ fontWeight: 500, mb: 2 }}>
-                                    {item.price}
-                                </Typography>
-                            )}
-                            <Box sx={{ display: 'flex', gap: 1, mt: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
-                                <Button 
-                                    variant="contained" 
-                                    color="primary" 
-                                    fullWidth 
-                                    href={item.link} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    sx={{ borderRadius: 2, textTransform: 'none', py: 1 }}
-                                    disabled={item.purchased}
-                                >
-                                    View / Buy
-                                </Button>
-                                {!item.purchased && (
-                                    <Button 
-                                        variant="outlined" 
-                                        color="secondary"
-                                        fullWidth 
-                                        sx={{ borderRadius: 2, textTransform: 'none', py: 1 }}
-                                        onClick={() => handleOpenPurchase(item.id)}
-                                    >
-                                        I Bought This
-                                    </Button>
-                                )}
-                            </Box>
-                        </Box>
-                    </MotionPaper>
-                ))}
-            </Masonry>
+                        Shop Our Amazon Registry
+                    </Button>
 
-            {items.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 10 }}>
-                    <Typography color="text.secondary">
-                        No items have been added to the registry yet.
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 3, fontSize: '0.95rem', fontStyle: 'italic' }}>
+                        For e-gift cards, please use: <strong>tylar.zanders18@gmail.com</strong>
                     </Typography>
-                </Box>
+                </Paper>
+            </Box>
+
+            {items.length > 0 && (
+                <>
+                    <Typography variant="h5" sx={{ textAlign: 'center', fontFamily: '"Cormorant Garamond", serif', fontWeight: 600, mb: 4, color: 'primary.main' }}>
+                        Additional Registry Items
+                    </Typography>
+                    <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={3}>
+                        {items.map((item, index) => (
+                            <MotionPaper
+                                key={item.id}
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                elevation={2}
+                                sx={{
+                                    borderRadius: 4,
+                                    overflow: 'hidden',
+                                    position: 'relative',
+                                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-8px)',
+                                        boxShadow: 6,
+                                    }
+                                }}
+                            >
+                                <Box sx={{ position: 'relative', bgcolor: '#fff', pt: 2, px: 2, opacity: item.purchased ? 0.6 : 1 }}>
+                                    <Box
+                                        component="img"
+                                        src={item.image || 'https://via.placeholder.com/400x400?text=Gift'}
+                                        alt={item.title}
+                                        sx={{
+                                            width: '100%',
+                                            height: 'auto',
+                                            objectFit: 'contain',
+                                            maxHeight: 300,
+                                            borderRadius: 2
+                                        }}
+                                    />
+                                    {item.purchased && (
+                                        <Box sx={{
+                                            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                                            bgcolor: 'rgba(0,0,0,0.7)', color: 'white', px: 2, py: 1, borderRadius: 2,
+                                            fontWeight: 'bold', letterSpacing: 1
+                                        }}>
+                                            PURCHASED
+                                        </Box>
+                                    )}
+                                </Box>
+                                
+                                <Box sx={{ p: 3, opacity: item.purchased ? 0.6 : 1 }}>
+                                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, lineHeight: 1.2 }}>
+                                        {item.title}
+                                    </Typography>
+                                    {item.price && item.showPrice !== false && (
+                                        <Typography variant="subtitle1" color="primary.main" sx={{ fontWeight: 500, mb: 2 }}>
+                                            {item.price}
+                                        </Typography>
+                                    )}
+                                    <Box sx={{ display: 'flex', gap: 1, mt: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+                                        <Button 
+                                            variant="contained" 
+                                            color="primary" 
+                                            fullWidth 
+                                            href={item.link} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            sx={{ borderRadius: 2, textTransform: 'none', py: 1 }}
+                                            disabled={item.purchased}
+                                        >
+                                            View / Buy
+                                        </Button>
+                                        {!item.purchased && (
+                                            <Button 
+                                                variant="outlined" 
+                                                color="secondary"
+                                                fullWidth 
+                                                sx={{ borderRadius: 2, textTransform: 'none', py: 1 }}
+                                                onClick={() => handleOpenPurchase(item.id)}
+                                            >
+                                                I Bought This
+                                            </Button>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </MotionPaper>
+                        ))}
+                    </Masonry>
+                </>
             )}
 
             <Dialog open={purchaseDialog.open} onClose={handleClosePurchase}>
