@@ -30,10 +30,32 @@ const Info = () => {
                     Wedding Weekend Details
                 </Typography>
 
-                <Box sx={{ mb: 6, textAlign: 'center' }}>
-                    <Typography variant="body1" sx={{ fontStyle: 'italic', fontSize: '1.2rem', color: 'text.secondary' }}>
-                        (the wedding venue is currently a secret)
+                <Box
+                    sx={{
+                        mb: 6,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: { xs: 1.5, sm: 3 },
+                        px: 2,
+                    }}
+                >
+                    <Box sx={{ height: '1px', width: { xs: '30px', sm: '70px' }, bgcolor: 'primary.main', opacity: 0.7 }} />
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            fontFamily: '"Cormorant Garamond", serif',
+                            fontStyle: 'italic',
+                            fontWeight: 500,
+                            fontSize: { xs: '1.2rem', sm: '1.45rem', md: '1.6rem' },
+                            color: 'text.primary',
+                            letterSpacing: '0.04em',
+                            textAlign: 'center',
+                        }}
+                    >
+                        Ceremony at Magic Island · Reception to Follow
                     </Typography>
+                    <Box sx={{ height: '1px', width: { xs: '30px', sm: '70px' }, bgcolor: 'primary.main', opacity: 0.7 }} />
                 </Box>
 
                 <Typography variant="h2" gutterBottom sx={{ color: 'primary.main', mb: 4 }}>
